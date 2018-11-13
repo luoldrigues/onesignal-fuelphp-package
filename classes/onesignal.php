@@ -142,7 +142,12 @@ class Onesignal
             {
                 return [
                     'success' => true,
-                    'fields_sent' => $fields,
+                    'fields_sent' => [
+                        'app_id' => $this->app_id,
+                        'include_player_ids' => $include_player_ids,
+                        'data' => $data,
+                        'contents' => $content
+                    ],
                     'response' => $response
                 ];
             }
