@@ -117,6 +117,21 @@ This step is optional. If you don't want to setup the config file or if you are 
 
 ### Send a push notification to specific user(s)
 Create a push notification and send based on OneSignal PlayerIds.
+
+***Method***
+```php
+    /**
+     * Send Push Notification Message to specific users
+     *
+     * @param  array  $content            Eg: $content = array("en" => 'English Message');
+     * @param  array  $include_player_ids Send the destination player_ids array. Eg: $player_ids = array("6392d91a-b206-4b7b-a620-cd68e32c3a76","76ece62b-bcfe-468c-8a78-839aeaa8c5fa","8e0f21fa-9a5a-4ae7-a9a6-ca1f24294b86");
+     * @param  array  $data               Optional param to send extra data. Eg: $data = array("foo" => "bar");
+     * @return boolean or array if debug
+     */
+    function send_message_users($content, $include_player_ids, $data = [])
+```
+
+***Usage***
 ```php
     $onesignal->send_message_users(
         array("en" => "English Message"), // message
