@@ -151,7 +151,7 @@ Create a push notification and send based on OneSignal PlayerIds.
 -------------------------------------------------------------------
 ## Licence
 
-GNU License <http://gnu.org/licenses/gpl.html>.
+MIT License - Copyright (c) 2018 Luan Rodrigues
 This is a free software! You are allowed to change and redistribute it for free.
 
 Written by Luan Rodrigues - [https://github.com/luoldrigues/onesignal-fuelphp-package](https://github.com/luoldrigues/onesignal-fuelphp-package)
