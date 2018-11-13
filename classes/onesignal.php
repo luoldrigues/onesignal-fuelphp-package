@@ -81,7 +81,7 @@ class Onesignal
      * Send Push Notification Message to specific users
      *
      * @param  array  $content            Eg: $content = array("en" => 'English Message');
-     * @param  array  $include_player_ids Optional param. Default value: All segments
+     * @param  array  $include_player_ids Send the destination player_ids array. Eg: $player_ids = array("6392d91a-b206-4b7b-a620-cd68e32c3a76","76ece62b-bcfe-468c-8a78-839aeaa8c5fa","8e0f21fa-9a5a-4ae7-a9a6-ca1f24294b86");
      * @param  array  $data               Optional param to send extra data. Eg: $data = array("foo" => "bar");
      * @return boolean or array if debug
      */
