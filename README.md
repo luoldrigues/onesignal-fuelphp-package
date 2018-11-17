@@ -15,6 +15,7 @@ An open source package for FuelPHP that integrate the [OneSignal Platform](http:
  * [Usage](#usage)
     * [Create an instance](#create-an-instance)
     * [Setup keys and ids programmaticaly](#setup-keys-and-ids-programmaticaly)
+    * [Send a push notification based on filter(s)](#send-a-push-notification-based-on-filters)
     * [Send a push notification to specific segment(s)](#send-a-push-notification-to-specific-segments)
     * [Send a push notification to specific user(s)](#send-a-push-notification-to-specific-users)
  * [Licence](#licence)
@@ -112,6 +113,55 @@ This step is optional. If you don't want to setup the config file or if you are 
     $onesignal_rest_api_key = 'NGEwMGZmMjItY2NkNy0xMWUzLTk5ZDUtMDAwYzI5NDBlNjJj';
 
     $onesignal->set_configs($onesignal_app_id, $onesignal_rest_api_key);
+```
+
+
+### Send a push notification based on filter(s)
+Create a push notification based on filters/tags. Please take a look at [OneSignal Send to Users Based on Filters](https://documentation.onesignal.com/v5.0/reference#section-send-to-users-based-on-filters)
+> [OneSignal Filters](https://documentation.onesignal.com/docs/segmentation#section-creating-segments-using-filters) are a powerful way to target users, allowing you to use both data that OneSignal has about a user and any [Tags](https://documentation.onesignal.com/docs/data-tags) your app may send OneSignal. Filters can be combined together to form advanced, highly precise user targeting. OneSignal customers use all sorts of filters to send notifications, including language, location, user activity, and more.
+
+***Method***
+```php
+    /**
+     * Send Push Notification Message based on filter tags
+     *
+     * @param  array  $content  Eg: $content = array("en" => 'English Message');
+     * @param  array  $filters  Filters. Eg: $filters = array(array("field" => "tag", "key" => "level", "relation" => "=", "value" => "10"),array("operator" => "OR"),array("field" => "amount_spent", "relation" => "=", "value" => "0")),
+     * @param  array  $data     Optional param to send extra data. Eg: $data = array("foo" => "bar");
+     * @return boolean or array if debug
+     */
+    public function send_message_filters($content, $filters, $data = [])
+```
+
+***Usage***
+```php
+    $onesignal->send_message_filters(
+        array("en" => "English Message"), // message
+        array(array("field" => "tag", "key" => "level", "relation" => "=", "value" => "10")), // Add your custom filters here.
+        array("foo" => "bar") // extra data (optional)
+    );
+```
+
+
+***Full example***
+```php
+    // Create a new instance
+    $onesignal = new Onesignal;
+
+    // Use your own app_id and rest_api_key.
+    $onesignal_app_id = '5eb5a37e-b458-11e3-ac11-000c2940e62c';
+    $onesignal_rest_api_key = 'NGEwMGZmMjItY2NkNy0xMWUzLTk5ZDUtMDAwYzI5NDBlNjJj';
+
+    // Setup configs programmaticaly
+    $onesignal->set_configs($onesignal_app_id, $onesignal_rest_api_key);
+
+    // Send a push notification based on filters
+    $onesignal->send_message_filters(
+        array("en" => "English Message"), // message
+        array(array("field" => "tag", "key" => "level", "relation" => "=", "value" => "10")), // Add your custom filters here.
+        array("foo" => "bar") // extra data (optional)
+    );
+
 ```
 
 

@@ -78,6 +78,109 @@ class Onesignal
 
 
     /**
+     * Send Push Notification Message based on filter tags
+     *
+     * @param  array  $content  Eg: $content = array("en" => 'English Message');
+     * @param  array  $filters  Filters. Eg: $filters = array(array("field" => "tag", "key" => "level", "relation" => "=", "value" => "10"),array("operator" => "OR"),array("field" => "amount_spent", "relation" => "=", "value" => "0")),
+     * @param  array  $data     Optional param to send extra data. Eg: $data = array("foo" => "bar");
+     * @return boolean or array if debug
+     */
+    public function send_message_filters($content, $filters, $data = [])
+    {
+        try
+        {
+            $this->validate_settings();
+
+            if(!is_array($content))
+            {
+                if($this->debug)
+                {
+                    throw new Exception("The content must be an array with the language as key. Eg: \$content = array(\"en\" => 'English Message');");
+                }
+
+                return false;
+            }
+
+            if(!is_array($filters) || !$filters)
+            {
+                if($this->debug)
+                {
+                    throw new Exception("Filters are required and must be a valid array of filter. Eg: \$filters = array(array(\"field\" => \"tag\", \"key\" => \"level\", \"relation\" => \"=\", \"value\" => \"10\"));");
+                }
+
+                return false;
+            }
+
+            // Filters simple validation
+            foreach ($filters as $filter)
+            {
+                if(!is_array($filter))
+                {
+                    if($this->debug)
+                    {
+                        throw new Exception("The filters content's must be also an array. Eg: \$filters = array(array(\"field\" => \"tag\", \"key\" => \"level\", \"relation\" => \"=\", \"value\" => \"10\"));");
+                    }
+
+                    return false;
+                }
+            }
+
+            if(!is_array($data))
+            {
+                if($this->debug)
+                {
+                    throw new Exception("The data field must be an array");
+                }
+
+                return false;
+            }
+
+            $response = $this->make_request([
+                'app_id' => $this->app_id,
+                'filters' => $filters,
+                'data' => $data,
+                'contents' => $content
+            ]);
+
+            if($response && array_key_exists('error', $response))
+            {
+                if($this->debug)
+                {
+                    throw new OneSignalApiException($response['error']);
+                }
+
+                return false;
+            }
+
+            if($this->debug)
+            {
+                return [
+                    'success' => true,
+                    'fields_sent' => [
+                        'app_id' => $this->app_id,
+                        'filters' => $filters,
+                        'data' => $data,
+                        'contents' => $content
+                    ],
+                    'response' => $response
+                ];
+            }
+
+            return true;
+        }
+        catch (Exception $e)
+        {
+            if($this->debug)
+            {
+                return $e->getMessage();
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
      * Send Push Notification Message to specific users
      *
      * @param  array  $content            Eg: $content = array("en" => 'English Message');
