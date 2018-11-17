@@ -16,7 +16,6 @@ An open source package for FuelPHP that integrate the [OneSignal platform](http:
     * [Create an instance](#create-an-instance)
     * [Setup keys and ids programmaticaly](#setup-keys-and-ids-programmaticaly)
     * [Send a push notification to specific user(s)](#send-a-push-notification-to-specific-users)
-    * [Full example](#full-example)
  * [Licence](#licence)
 
 
@@ -141,7 +140,7 @@ Create a push notification and send based on OneSignal PlayerIds.
 ```
 
 
-### Full example
+***Full example***
 ```php
     // Create a new instance
     $onesignal = new Onesignal;
