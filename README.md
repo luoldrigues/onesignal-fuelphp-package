@@ -1,7 +1,7 @@
 OneSignal FuelPHP Package.
 ======================
 
-An open source package for FuelPHP that integrate the [OneSignal platform](http://onesignal.com) into your project using Curl native calls. Written by [Luan Rodrigues](https://github.com/luoldrigues).
+An open source package for FuelPHP that integrate the [OneSignal Platform](http://onesignal.com) into your project using Curl native calls. Written by [Luan Rodrigues](https://github.com/luoldrigues).
 
 
 ## Index
@@ -15,6 +15,7 @@ An open source package for FuelPHP that integrate the [OneSignal platform](http:
  * [Usage](#usage)
     * [Create an instance](#create-an-instance)
     * [Setup keys and ids programmaticaly](#setup-keys-and-ids-programmaticaly)
+    * [Send a push notification to specific segment(s)](#send-a-push-notification-to-specific-segments)
     * [Send a push notification to specific user(s)](#send-a-push-notification-to-specific-users)
  * [Licence](#licence)
 
@@ -111,6 +112,55 @@ This step is optional. If you don't want to setup the config file or if you are 
     $onesignal_rest_api_key = 'NGEwMGZmMjItY2NkNy0xMWUzLTk5ZDUtMDAwYzI5NDBlNjJj';
 
     $onesignal->set_configs($onesignal_app_id, $onesignal_rest_api_key);
+```
+
+
+### Send a push notification to specific segment(s)
+Create a push notification and send based on OneSignal Segment(s).
+> Tip: If you want to send to all your subscribed users, use any segment that has no filters. See [OneSignal Segments Documentation](https://documentation.onesignal.com/docs/segmentation) for information on how to identify which segments you have as well as information about built-in segments that OneSignal will create for every app.
+
+***Method***
+```php
+    /**
+     * Send Push Notification Message to specific segment(s)
+     *
+     * @param  array  $content           Eg: $content = array("en" => 'English Message');
+     * @param  array  $included_segments Optional. Default: Send to All segments
+     * @param  array  $data              Optional. Send extra data. Eg: $data = array("foo" => "bar");
+     * @return boolean or array if debug
+     */
+    public function send_message_segments($content, $included_segments = ['All'], $data = [])
+```
+
+***Usage***
+```php
+    $onesignal->send_message_segments(
+        array("en" => "English Message"), // message
+        array("Active Users"), // segment name you want to send. Eg: 'All' or 'Active Users'
+        array("foo" => "bar") // extra data (optional)
+    );
+```
+
+
+***Full example***
+```php
+    // Create a new instance
+    $onesignal = new Onesignal;
+
+    // Use your own app_id and rest_api_key.
+    $onesignal_app_id = '5eb5a37e-b458-11e3-ac11-000c2940e62c';
+    $onesignal_rest_api_key = 'NGEwMGZmMjItY2NkNy0xMWUzLTk5ZDUtMDAwYzI5NDBlNjJj';
+
+    // Setup configs programmaticaly
+    $onesignal->set_configs($onesignal_app_id, $onesignal_rest_api_key);
+
+    // Send a push notification to specific segment(s)
+    $onesignal->send_message_segments(
+        array("en" => "English Message"), // message
+        array("Active Users"), // segment name you want to send.
+        array("foo" => "bar") // extra data (optional)
+    );
+
 ```
 
 
