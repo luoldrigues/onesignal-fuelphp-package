@@ -167,6 +167,78 @@ class Onesignal
 
 
     /**
+     * Send Push Notification Message to specific segment(s)
+     *
+     * @param  array  $content           Eg: $content = array("en" => 'English Message');
+     * @param  array  $included_segments Optional. Default: Send to All segments
+     * @param  array  $data              Optional. Send extra data. Eg: $data = array("foo" => "bar");
+     * @return boolean or array if debug
+     */
+    public function send_message_segments($content, $included_segments = ['All'], $data = [])
+    {
+        try
+        {
+            $this->validate_settings();
+
+            if(!is_array($content))
+            {
+                if($this->debug)
+                {
+                    throw new Exception("The content must be an array with the language as key. Eg: \$content = array(\"en\" => 'English Message');");
+                }
+
+                return false;
+            }
+
+            $response = $this->make_request([
+                'app_id' => $this->app_id,
+                'included_segments' => $included_segments,
+                'data' => $data,
+                'contents' => $content
+            ]);
+
+            if($response && array_key_exists('error', $response))
+            {
+                if($this->debug)
+                {
+                    throw new OneSignalApiException($response['error']);
+                }
+
+                return false;
+            }
+
+            if($this->debug)
+            {
+                return [
+                    'success' => true,
+                    'fields_sent' => [
+                        'app_id' => $this->app_id,
+                        'included_segments' => $included_segments,
+                        'data' => $data,
+                        'contents' => $content
+                    ],
+                    'response' => $response
+                ];
+            }
+
+            return true;
+        }
+        catch (Exception $e)
+        {
+            if($this->debug)
+            {
+                return [
+                    'success' => false,
+                    'error_message' => $e->getMessage()
+                ];
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
      * Make Request
      *
      * @param  array $fields Fields to be send
